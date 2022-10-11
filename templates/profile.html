@@ -1,0 +1,126 @@
+{% extends "headsidebar.html" %}
+
+{% block page %}
+<div class="card card-body blur shadow-blur">
+    <div class="row gx-4">
+        <div class="col-auto my-auto">
+            <div class="h-100">
+                <h5 class="mb-1">
+                    {{ user.username }}
+                </h5>
+                <p class="mb-0 font-weight-bold text-sm">
+                    {% if user.is_staff %}
+                    Super Admin
+                    {% else %}
+                    Normal User
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="py-4">
+    <div class="row">
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header pb-0 p-3">
+                    <h6 class="mb-0">修改密码</h6>
+                </div>
+                <form class="p-3" method="POST">
+                    {% csrf_token %}
+                    <p style="color: red;">{{ Msg }}</p>
+                    <p>原密码：</p>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="oldpwd" placeholder="Old PassWd" minlength="8"
+                            maxlength="32" required>
+                    </div>
+                    <p>新密码：</p>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" name="newpwd" placeholder="New PassWd" minlength="8"
+                            maxlength="32" id="newpwd" required>
+                    </div>
+                    <button type="button" class="btn bg-gradient-primary" onclick="passwdCheck()">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8">
+            <div class="card h-100">
+                <div class="card-header pb-0 p-3">
+                    <div class="row">
+                        <div class="col-md-8 d-flex align-items-center">
+                            <h6 class="mb-0">已预约疫苗信息</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-3">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>疫苗厂商</th>
+                                <th>预定接种日期</th>
+                                <th>有效性</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="vaccinebooked">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer pt-3">
+        <div class="container-fluid">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 mb-lg-0 mb-4">
+                    <div class="copyright text-center text-sm text-muted">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>,
+                        Made By
+                        <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Jakey</a>,
+                        Powered By Django
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<!-- 取消预约模态框 -->
+<div class="modal fade" id="bookVer" tabindex="-1" aria-labelledby="bookVer" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">人机验证</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>请输入图中验证码：</p>
+                <form>
+                    <div class="form-floating shadow" onkeypress="return event.keyCode != 13;">
+                        <input type="text" class="form-control" id="captcha" name="captcha" placeholder="Captcha"
+                            minlength="5" maxlength="5" required>
+                        <label for="captcha">Captcha</label>
+                        <input id="book_id" type="hidden">
+                    </div>
+                    <div class="py-3">
+                        <img src="{% url 'captcha' %}" alt="captcha" class="captcha"
+                            style="cursor:pointer; object-fit:fill;" loading="lazy"
+                            onclick='this.src="{% url "captcha" %}?"+Math.random()'>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="button" class="btn bg-gradient-primary" onclick="unbook()">取消预约</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 用toast展示取消预约结果 -->
+<div id="ToastDiv"></div>
+{% endblock page %}
+{% block script %}
+<script src="../static/js/profile.js"></script>
+{% endblock script %}

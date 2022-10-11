@@ -1,0 +1,99 @@
+{% extends "headsidebar.html" %}
+
+{% block page %}
+<!-- 健康上报表单页 -->
+<div class="mb-4">
+    <div class="card">
+        <div class="mb-4">
+            <h4 class="pt-4 ps-4" id="ErrMsg">{{ ErrMsg }}</h4>
+            <h4 class="pt-4 ps-4" id="Msg">{{ Msg }}</h4>
+            {% if ErrMsg is None and Msg is not None %}
+            <script>
+                document.getElementById("ErrMsg").classList.add("d-none");
+            </script>
+            {% elif Msg is None and ErrMsg is not None %}
+            <script>
+                document.getElementById("Msg").classList.add("d-none");
+            </script>
+            {% elif ErrMsg is None and Msg is None %}
+            <script>
+                document.getElementById("ErrMsg").classList.add("d-none");
+                document.getElementById("Msg").classList.add("d-none");
+            </script>
+            <form class="p-5" method="post">
+                {% csrf_token %}
+                <p>当前所在位置</p>
+                <div class="mb-3">
+                    <textarea class="form-control" name="position" id="position" rows="1" maxlength="80"
+                        required></textarea>
+                </div>
+                <hr class="horizontal dark mt-0">
+                <p>当前体温</p>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tempHigh" id="tempHigh1" value=False required>
+                    <label class="form-check-label" for="tempHigh1">正常</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tempHigh" id="tempHigh2" value=True>
+                    <label class="form-check-label" for="tempHigh2">高于37.5°C</label>
+                </div>
+                <hr class="horizontal dark mt-0">
+                <p>当前健康码状态</p>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="HealthCode" id="HealthCode1" value="0" required>
+                    <label class="form-check-label" for="HealthCode1">绿码</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="HealthCode" id="HealthCode3" value="1">
+                    <label class="form-check-label" for="HealthCode3">黄码</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="HealthCode" id="HealthCode2" value="2">
+                    <label class="form-check-label" for="HealthCode2">红码</label>
+                </div>
+                <hr class="horizontal dark mt-0">
+                <p>当前行程码是否带“*”</p>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="StrokeCode" id="StrokeCode1" value=True required>
+                    <label class="form-check-label" for="StrokeCode1">是</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="StrokeCode" id="StrokeCode2" value=True>
+                    <label class="form-check-label" for="StrokeCode2">否</label>
+                </div>
+                <hr class="horizontal dark mt-0">
+                <p>新冠疫苗接种情况</p>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Vaccine" id="Vaccine1" value="1" required>
+                    <label class="form-check-label" for="Vaccine1">已接种1针</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Vaccine" id="Vaccine2" value="2">
+                    <label class="form-check-label" for="Vaccine2">已接种2针</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Vaccine" id="Vaccine3" value="3">
+                    <label class="form-check-label" for="Vaccine3">已接种3针</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Vaccine" id="Vaccine0" value="0">
+                    <label class="form-check-label" for="Vaccine0">未接种</label>
+                </div>
+                <hr class="horizontal dark mt-0">
+                <p>目前身体状况</p>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Symptom" id="Symptom1" value=False required>
+                    <label class="form-check-label" for="Symptom1">正常</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Symptom" id="Symptom2" value=True>
+                    <label class="form-check-label" for="Symptom2">干咳、乏力、嗅觉味觉减退、鼻塞、咽痛、结膜炎、肌痛和腹泻等任意症状</label>
+                </div>
+                <hr class="horizontal dark mt-0">
+                <button type="submit" class="btn bg-gradient-primary">提交</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock page %}

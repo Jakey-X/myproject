@@ -1,0 +1,87 @@
+{% extends "headsidebar.html" %}
+
+{% block page %}
+<!-- 风险地区展示 -->
+{% if user.is_authenticated %}
+<script>
+    var is_auth=true;
+</script>
+{% else %}
+<script>
+    var is_auth=false;
+</script>
+{% endif %}
+<div class="mb-4">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0 d-flex justify-content-between">
+                <h6>风险地区列表</h6>
+                {% if user.is_authenticated %}
+                <div style="width:auto" class="input-group" id="inputIcon">
+                    <span style="z-index:10;" class="input-group-text text-body">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
+                            class="bi bi-search" viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </span>
+                    <input style="padding-left:35px!important;" type="text" name="area" id="searchArea"
+                        class="form-control" placeholder="风险地区查询" onkeypress="if(event.keyCode==13){search()}">
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">地区</th>
+                                <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    风险状态</th>
+                                <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    更新日期</th>
+                                {% if user.is_authenticated %}
+                                <th class="text-secondary opacity-7"></th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody id="areasList">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 地区详情模态框 -->
+<div class="modal fade" id="detail" tabindex="-1" aria-labelledby="detail" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">地区详情</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>地区</h6>
+                <p id="area"></p>
+                <hr class="horizontal dark mt-0">
+                <h6>风险等级</h6>
+                <p id="risk"></p>
+                <hr class="horizontal dark mt-0">
+                <h6>防疫政策</h6>
+                <textarea class="form-control" id="policy" rows="20" readonly></textarea>
+                <hr class="horizontal dark mt-0">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ToastDiv"></div>
+{% endblock page %}
+{% block script %}
+<script src="../static/js/risk-areas.js"></script>
+{% endblock script %}
